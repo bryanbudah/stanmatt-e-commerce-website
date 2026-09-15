@@ -1,0 +1,16 @@
+{% extends "store/base.html" %}
+{% block title %}Order Confirmed — StanMatt{% endblock %}
+{% block content %}
+<section class="success-page container">
+    <div class="success-icon">✓</div>
+    <span class="eyebrow">ORDER CONFIRMED</span>
+    <h1>Thanks, {{ order.full_name }}!</h1>
+    <p>Your StanMatt order <b>#{{ order.id }}</b> has been received.</p>
+    <div class="success-card">
+        <div><span>Payment</span><b>{{ order.get_payment_method_display }}</b></div>
+        <div><span>Delivery</span><b>{{ order.city }}</b></div>
+        <div><span>Total</span><b>KSh {{ order.total|floatformat:0 }}</b></div>
+    </div>
+    <a href="{% url 'products' %}" class="btn btn-red">Continue shopping →</a>
+</section>
+{% endblock %}

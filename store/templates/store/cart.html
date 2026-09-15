@@ -1,0 +1,169 @@
+
+{% extends "store/base.html" %}
+
+{% block title %}Your Cart — StanMatt{% endblock %}
+
+{% block content %}
+
+<section class="page-head">
+    <div class="container">
+        <span class="eyebrow">SHOPPING BAG</span>
+        <h1>Your Cart</h1>
+        <p>Review your items before checkout.</p>
+    </div>
+</section>
+
+<section class="section container cart-layout">
+
+    <div class="cart-items">
+
+        {% for item in items %}
+
+        <div class="cart-item">
+
+            <!-- Product image -->
+            <div class="cart-emoji">
+                {% if item.product.display_image %}
+                    <img
+                        src="{{ item.product.display_image }}"
+                        alt="{{ item.product.name }}"
+                    >
+                {% else %}
+                    {{ item.product.emoji }}
+                {% endif %}
+            </div>
+
+            <!-- Product information -->
+            <div class="cart-main">
+                <small>{{ item.product.category.name }}</small>
+
+                <h3>{{ item.product.name }}</h3>
+
+                <b>
+                    KSh {{ item.product.price|floatformat:0 }}
+                </b>
+            </div>
+
+            <!-- Quantity -->
+            <form
+                method="post"
+                action="{% url 'update_cart' item.product.id %}"
+                class="qty-form"
+            >
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    name="quantity"
+                    value="{{ item.quantity|add:'-1' }}"
+                >
+                    −
+                </button>
+
+                <span>{{ item.quantity }}</span>
+
+                <button
+                    type="submit"
+                    name="quantity"
+                    value="{{ item.quantity|add:'1' }}"
+                >
+                    +
+                </button>
+            </form>
+
+            <!-- Line total -->
+            <strong>
+                KSh {{ item.line_total|floatformat:0 }}
+            </strong>
+
+            <!-- Remove -->
+            <form
+                method="post"
+                action="{% url 'remove_from_cart' item.product.id %}"
+            >
+                {% csrf_token %}
+
+                <button class="remove-btn" type="submit">
+                    ×
+                </button>
+            </form>
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-state">
+            <div class="empty-icon">🛒</div>
+
+            <h2>Your cart is empty</h2>
+
+            <p>
+                Add some fresh products and come back here.
+            </p>
+
+            <a
+                class="btn btn-red"
+                href="{% url 'products' %}"
+            >
+                Start shopping
+            </a>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% if items %}
+
+    <aside class="summary">
+
+        <h2>Order summary</h2>
+
+        <!-- Subtotal -->
+        <div>
+            <span>Subtotal</span>
+            <b>
+                KSh {{ subtotal|floatformat:0 }}
+            </b>
+        </div>
+
+        <!-- Discount -->
+        <div>
+            <span>Discount</span>
+            <b>
+                -KSh {{ discount|floatformat:0 }}
+            </b>
+        </div>
+
+        <hr>
+
+        <!-- Total -->
+        <div class="total">
+            <span>Total</span>
+            <b>
+                KSh {{ total|floatformat:0 }}
+            </b>
+        </div>
+
+        <a
+            class="btn btn-red full"
+            href="{% url 'checkout' %}"
+        >
+            Proceed to checkout →
+        </a>
+
+        <div class="payment-mini">
+            We accept
+            <b>VISA</b> ·
+            <b>Mastercard</b> ·
+            <b>M-Pesa</b>
+        </div>
+
+    </aside>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

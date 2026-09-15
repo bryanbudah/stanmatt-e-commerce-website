@@ -1,0 +1,200 @@
+
+{% extends "store/base.html" %}
+
+{% block title %}Checkout — StanMatt{% endblock %}
+
+{% block content %}
+
+<section class="page-head">
+    <div class="container">
+        <span class="eyebrow">SECURE CHECKOUT</span>
+        <h1>Complete your order</h1>
+        <p>Fast, simple and secure.</p>
+    </div>
+</section>
+
+<section class="section container checkout-layout">
+
+    <form method="post" class="checkout-form">
+
+        {% csrf_token %}
+
+        <!-- Customer information -->
+        <div class="panel">
+
+            <h2>Delivery information</h2>
+
+            <div class="form-grid">
+
+                <label>
+                    Full name
+                    <input
+                        name="full_name"
+                        required
+                        placeholder="Your full name"
+                    >
+                </label>
+
+                <label>
+                    Phone number
+                    <input
+                        name="phone"
+                        required
+                        placeholder="07XX XXX XXX"
+                    >
+                </label>
+
+                <label class="wide">
+                    Delivery address
+                    <textarea
+                        name="address"
+                        required
+                        placeholder="Street, building, house number..."
+                    ></textarea>
+                </label>
+
+                <label>
+                    City / Town
+                    <input
+                        name="city"
+                        value="Nairobi"
+                    >
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- Payment -->
+        <div class="panel">
+
+            <h2>Payment method</h2>
+
+            <div class="payment-options">
+
+                <label class="payment-option">
+
+                    <input
+                        type="radio"
+                        name="payment_method"
+                        value="mpesa"
+                        required
+                    >
+
+                    <span>📱</span>
+
+                    <div>
+                        <b>M-Pesa</b>
+                        <small>Pay using M-Pesa</small>
+                    </div>
+
+                </label>
+
+
+                <label class="payment-option">
+
+                    <input
+                        type="radio"
+                        name="payment_method"
+                        value="card"
+                    >
+
+                    <span>💳</span>
+
+                    <div>
+                        <b>Card payment</b>
+                        <small>Visa / Mastercard</small>
+                    </div>
+
+                </label>
+
+            </div>
+
+            <p class="demo-note">
+                Demo checkout: this version records your selected payment
+                method. Connect an approved payment provider before
+                accepting real payments.
+            </p>
+
+        </div>
+
+
+        <button
+            class="btn btn-red large full"
+            type="submit"
+        >
+            Place order →
+        </button>
+
+    </form>
+
+
+    <!-- Order summary -->
+    <aside class="summary checkout-summary">
+
+        <h2>Order summary</h2>
+
+        {% for item in items %}
+
+        <div class="mini-product">
+
+            <!-- Product image -->
+            <span class="mini-product-image">
+
+                {% if item.product.display_image %}
+
+                    <img
+                        src="{{ item.product.display_image }}"
+                        alt="{{ item.product.name }}"
+                    >
+
+                {% else %}
+
+                    {{ item.product.emoji }}
+
+                {% endif %}
+
+            </span>
+
+            <div>
+                {{ item.product.name }}
+                × {{ item.quantity }}
+            </div>
+
+            <b>
+                KSh {{ item.line_total|floatformat:0 }}
+            </b>
+
+        </div>
+
+        {% endfor %}
+
+        <hr>
+
+        <div>
+            <span>Subtotal</span>
+            <b>
+                KSh {{ subtotal|floatformat:0 }}
+            </b>
+        </div>
+
+        <div>
+            <span>Discount</span>
+            <b>
+                -KSh {{ discount|floatformat:0 }}
+            </b>
+        </div>
+
+        <div class="total">
+            <span>Total</span>
+            <b>
+                KSh {{ total|floatformat:0 }}
+            </b>
+        </div>
+
+    </aside>
+
+</section>
+
+{% endblock %}

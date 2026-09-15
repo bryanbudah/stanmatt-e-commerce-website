@@ -1,0 +1,16 @@
+{% extends "store/base.html" %}
+{% block title %}Log in — StanMatt{% endblock %}
+{% block content %}
+<section class="auth-page container"><div class="auth-card">
+    <div class="auth-logo">Stan<span>Matt</span> 🛒</div><h1>Welcome back!</h1><p>Log in to your StanMatt account.</p>
+    <form method="post">{% csrf_token %}
+        {% if form.errors %}<div class="form-error">Please check your username and password.</div>{% endif %}
+        <label>Username<input name="username" required autofocus></label>
+        <label>Password<input type="password" name="password" required></label>
+        <input type="hidden" name="next" value="{{ next }}">
+        <button class="btn btn-red full large">Log in</button>
+    </form>
+    <a class="forgot" href="{% url 'password_reset' %}">Forgot password?</a>
+    <p>Don't have an account? <a href="{% url 'signup' %}">Create account</a></p>
+</div></section>
+{% endblock %}
