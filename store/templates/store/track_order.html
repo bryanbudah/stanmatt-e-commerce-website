@@ -1,0 +1,44 @@
+{% extends "store/base.html" %}
+
+{% block title %}Track Order — StanMatt{% endblock %}
+
+{% block content %}
+
+<section class="policy-page container">
+
+    <div class="policy-header">
+        <span class="policy-icon">📦</span>
+        <h1>Track Your Order</h1>
+        <p>Enter your order number to check your delivery status.</p>
+    </div>
+
+    <div class="policy-card track-card">
+
+        <form method="get">
+            <label for="order_number">Order number</label>
+
+            <input
+                type="text"
+                id="order_number"
+                name="order_number"
+                placeholder="e.g. SM-2026-00125"
+            >
+
+            <button type="submit">
+                Track Order
+            </button>
+        </form>
+
+        <div class="demo-notice">
+            <strong>Demo feature</strong>
+            <p>
+                Order tracking is currently a demonstration feature
+                for the StanMatt website.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,143 +1,293 @@
 {% extends "store/base.html" %}
+
 {% load static %}
 
-{% block title %}Shop — StanMatt{% endblock %}
+{% block title %}
+    {% if page_title %}
+        {{ page_title }} — StanMatt
+    {% else %}
+        Shop — StanMatt
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 
 <section class="page-head">
+
     <div class="container">
+
         <span class="eyebrow">STANMATT SHOP</span>
 
         <h1>
-            {% if selected_category %}
+            {% if page_title %}
+                {{ page_title }}
+            {% elif selected_category %}
                 Shop by category
             {% else %}
                 All products
             {% endif %}
         </h1>
 
-        <p>Find your everyday essentials at great prices.</p>
+        <p>
+            {% if page_description %}
+                {{ page_description }}
+            {% elif query %}
+                Search results for "{{ query }}" at StanMatt.
+            {% else %}
+                Find your everyday essentials at great prices.
+            {% endif %}
+        </p>
 
-        <div class="shop-carousel" id="shopCarousel" aria-label="StanMatt promotions">
-            <img src="{% static 'store/images/stany1.jpg' %}" class="shop-slide active" alt="StanMatt promotion">
+        <!-- SHOP CAROUSEL -->
 
-            <img src="{% static 'store/images/stany3.jpg' %}" class="shop-slide" alt="StanMatt promotion">
+        <div
+            class="shop-carousel"
+            id="shopCarousel"
+            aria-label="StanMatt promotions"
+        >
 
-            <img src="{% static 'store/images/stany4.jpg' %}" class="shop-slide" alt="StanMatt promotion">
+            <img
+                src="{% static 'store/images/stany1.jpg' %}"
+                class="shop-slide active"
+                alt="StanMatt shopping promotion"
+            >
 
-            <img src="{% static 'store/images/stany5.jpg' %}" class="shop-slide" alt="StanMatt promotion">
+            <img
+                src="{% static 'store/images/stany3.jpg' %}"
+                class="shop-slide"
+                alt="StanMatt product promotion"
+            >
 
-            <button class="shop-carousel-arrow shop-carousel-prev" type="button" aria-label="Previous image">
+            <img
+                src="{% static 'store/images/stany4.jpg' %}"
+                class="shop-slide"
+                alt="StanMatt shopping deals"
+            >
+
+            <img
+                src="{% static 'store/images/stany5.jpg' %}"
+                class="shop-slide"
+                alt="StanMatt featured products"
+            >
+
+            <button
+                class="shop-carousel-arrow shop-carousel-prev"
+                type="button"
+                aria-label="Previous image"
+            >
                 &#10094;
             </button>
 
-            <button class="shop-carousel-arrow shop-carousel-next" type="button" aria-label="Next image">
+            <button
+                class="shop-carousel-arrow shop-carousel-next"
+                type="button"
+                aria-label="Next image"
+            >
                 &#10095;
             </button>
 
-            <div class="shop-carousel-dots" id="shopCarouselDots"></div>
+            <div
+                class="shop-carousel-dots"
+                id="shopCarouselDots"
+            ></div>
+
         </div>
+
     </div>
+
 </section>
+
 
 <section class="section container shop-layout">
 
-    <!-- CATEGORY FILTERS -->
+    <!-- =====================================================
+         CATEGORY FILTERS
+         ===================================================== -->
+
     <aside class="filters">
-        <h3>Filter by</h3>
-        <h4>Categories</h4>
+
+        <h2>Shop by category</h2>
 
         {% for category in categories %}
+
             <a
                 class="{% if selected_category == category.slug %}active{% endif %}"
                 href="{% url 'category_products' category.slug %}"
             >
-                {{ category.icon }} {{ category.name }}
+                {{ category.icon }}
+                {{ category.name }}
             </a>
+
+        {% empty %}
+
+            <p>No categories available.</p>
+
         {% endfor %}
 
         <a href="{% url 'products' %}">
             View all products
         </a>
+
     </aside>
 
-    <!-- PRODUCTS -->
+
+    <!-- =====================================================
+         PRODUCTS
+         ===================================================== -->
+
     <div class="shop-products">
 
         <!-- RESULTS BAR -->
+
         <div class="results-bar">
+
             <div>
+
                 <b>{{ products|length }}</b>
-                products
+
+                {% if products|length == 1 %}
+                    product
+                {% else %}
+                    products
+                {% endif %}
 
                 {% if query %}
-                    for “{{ query }}”
+                    for "{{ query }}"
                 {% endif %}
+
             </div>
 
-            <select id="sortProducts">
-                <option value="popular">Sort by: Popular</option>
-                <option value="low">Price: Low to high</option>
-                <option value="high">Price: High to low</option>
+            <select
+                id="sortProducts"
+                aria-label="Sort products"
+            >
+                <option value="popular">
+                    Sort by: Popular
+                </option>
+
+                <option value="low">
+                    Price: Low to high
+                </option>
+
+                <option value="high">
+                    Price: High to low
+                </option>
             </select>
+
         </div>
 
-        <!-- PRODUCT GRID -->
+
+        <!-- =================================================
+             PRODUCT GRID
+             ================================================= -->
+
         <div class="product-grid listing-grid">
+
             {% for product in products %}
 
                 <article class="product-card">
 
                     <!-- DISCOUNT -->
+
                     {% if product.discount_percent %}
+
                         <span class="discount">
                             -{{ product.discount_percent }}%
                         </span>
+
                     {% endif %}
 
+
                     <!-- PRODUCT IMAGE -->
+
                     <a
                         href="{% url 'product_detail' product.slug %}"
                         class="product-image"
+                        aria-label="View {{ product.name }}"
                     >
+
                         {% if product.display_image %}
+
                             <img
                                 src="{{ product.display_image }}"
                                 alt="{{ product.name }}"
                                 loading="lazy"
                             >
+
                         {% else %}
-                            <span class="product-emoji">
+
+                            <span
+                                class="product-emoji"
+                                aria-hidden="true"
+                            >
                                 {{ product.emoji }}
                             </span>
+
                         {% endif %}
+
                     </a>
 
-                    <!-- PRODUCT INFORMATION -->
-                    <div class="product-info">
-                        <small>{{ product.category.name }}</small>
 
-                        <h3>{{ product.name }}</h3>
+                    <!-- PRODUCT INFORMATION -->
+
+                    <div class="product-info">
+
+                        <small>
+                            {{ product.category.name }}
+                        </small>
+
+                        <h2>
+                            <a
+                                href="{% url 'product_detail' product.slug %}"
+                            >
+                                {{ product.name }}
+                            </a>
+                        </h2>
+
 
                         <!-- PRICE -->
+
                         <div class="price-row">
+
                             <strong>
                                 KSh {{ product.price|floatformat:0 }}
                             </strong>
 
                             {% if product.old_price %}
+
                                 <del>
                                     KSh {{ product.old_price|floatformat:0 }}
                                 </del>
+
                             {% endif %}
+
                         </div>
 
+
+                        <!-- STOCK STATUS -->
+
+                        {% if product.stock > 0 %}
+
+                            <small class="stock-status">
+                                In stock
+                            </small>
+
+                        {% else %}
+
+                            <small class="stock-status">
+                                Out of stock
+                            </small>
+
+                        {% endif %}
+
+
                         <!-- ADD TO CART -->
+
                         <form
                             method="post"
                             action="{% url 'add_to_cart' product.id %}"
                         >
+
                             {% csrf_token %}
 
                             <input
@@ -149,38 +299,62 @@
                             <button
                                 class="btn btn-red full"
                                 type="submit"
-                                {% if product.stock == 0 %}disabled{% endif %}
-                            >
-                                {% if product.stock > 0 %}
-                                    Add to cart
-                                {% else %}
-                                    Out of stock
+                                {% if product.stock == 0 %}
+                                    disabled
                                 {% endif %}
+                            >
+
+                                {% if product.stock > 0 %}
+
+                                    Add to cart
+
+                                {% else %}
+
+                                    Out of stock
+
+                                {% endif %}
+
                             </button>
+
                         </form>
+
                     </div>
+
                 </article>
 
             {% empty %}
 
+                <!-- EMPTY STATE -->
+
                 <div class="empty-state">
+
                     <h2>No products found</h2>
 
                     <p>
-                        Try another search or category.
+                        {% if query %}
+                            We couldn't find products matching
+                            "{{ query }}".
+                        {% else %}
+                            There are currently no products
+                            in this collection.
+                        {% endif %}
                     </p>
 
                     <a
                         class="btn btn-red"
                         href="{% url 'products' %}"
                     >
-                        View all
+                        View all products
                     </a>
+
                 </div>
 
             {% endfor %}
+
         </div>
+
     </div>
+
 </section>
 
 {% endblock %}

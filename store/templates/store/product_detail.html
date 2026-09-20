@@ -1,22 +1,252 @@
 {% extends "store/base.html" %}
-{% block title %}{{ product.name }} — StanMatt{% endblock %}
-{% block content %}
-<section class="section container product-detail">
-    <div class="detail-image">
+{% load static %}
+
+{% block title %}
+{{ product.name }} — StanMatt
+{% endblock %}
+
+{% block meta_description %}
+{{ product.description|striptags|truncatechars:160 }}
+{% endblock %}
+
+{% block og_type %}
+product
+{% endblock %}
+
+{% block og_title %}
+{{ product.name }} — StanMatt
+{% endblock %}
+
+{% block og_description %}
+{{ product.description|striptags|truncatechars:160 }}
+{% endblock %}
+
+{% block og_image %}
+{% if product.display_image %}
+{{ product.display_image }}
+{% else %}
+{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt-logo.png' %}
+{% endif %}
+{% endblock %}
+
+{% block twitter_title %}
+{{ product.name }} — StanMatt
+{% endblock %}
+
+{% block twitter_description %}
+{{ product.description|striptags|truncatechars:160 }}
+{% endblock %}
+
+{% block extra_head %}
+
+```
+<!-- =====================================================
+     PRODUCT META DATA
+     ===================================================== -->
+
+<meta
+    property="product:price:amount"
+    content="{{ product.price }}"
+>
+
+<meta
+    property="product:price:currency"
+    content="KES"
+>
+
+{% if product.stock > 0 %}
+
+    <meta
+        property="product:availability"
+        content="in stock"
+    >
+
+{% else %}
+
+    <meta
+        property="product:availability"
+        content="out of stock"
+    >
+
+{% endif %}
+
+
+<!-- =====================================================
+     PRODUCT JSON-LD STRUCTURED DATA
+     ===================================================== -->
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Product",
+
+    "name": "{{ product.name|escapejs }}",
+
+    "description": "{{ product.description|striptags|escapejs }}",
+
+    "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'product_detail' product.slug %}",
+
     {% if product.display_image %}
-        <img src="{{ product.display_image }}" alt="{{ product.name }}">
+    "image": [
+        "{{ product.display_image }}"
+    ],
     {% else %}
-        {{ product.emoji }}
+    "image": [
+        "{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt-logo.png' %}"
+    ],
     {% endif %}
+
+    "category": "{{ product.category.name|escapejs }}",
+
+    "offers": {
+        "@type": "Offer",
+
+        "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'product_detail' product.slug %}",
+
+        "priceCurrency": "KES",
+
+        "price": "{{ product.price }}",
+
+        "itemCondition": "https://schema.org/NewCondition",
+
+        "availability": "{% if product.stock > 0 %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+    }
+}
+</script>
+```
+
+{% endblock %}
+
+{% block content %}
+
+<section class="section container product-detail">
+
+```
+<!-- =====================================================
+     PRODUCT IMAGE
+     ===================================================== -->
+
+<div class="detail-image">
+
+    {% if product.display_image %}
+
+        <img
+            src="{{ product.display_image }}"
+            alt="{{ product.name }}"
+        >
+
+    {% else %}
+
+        {{ product.emoji }}
+
+    {% endif %}
+
 </div>
-    <div class="detail-copy">
-        <span class="eyebrow">{{ product.category.name }}</span>
-        <h1>{{ product.name }}</h1>
-        <div class="big-price">KSh {{ product.price|floatformat:0 }} {% if product.old_price %}<del>KSh {{ product.old_price|floatformat:0 }}</del>{% endif %}</div>
-        {% if product.discount_percent %}<span class="discount inline-discount">Save {{ product.discount_percent }}%</span>{% endif %}
-        <p>{{ product.description }}</p>
-        <p class="stock">✓ In stock · {{ product.stock }} available</p>
-        <form method="post" action="{% url 'add_to_cart' product.id %}">{% csrf_token %}<input type="hidden" name="next" value="{% url 'cart' %}"><button class="btn btn-red large">Add to cart</button></form>
+
+
+<!-- =====================================================
+     PRODUCT INFORMATION
+     ===================================================== -->
+
+<div class="detail-copy">
+
+    <span class="eyebrow">
+        {{ product.category.name }}
+    </span>
+
+
+    <h1>
+        {{ product.name }}
+    </h1>
+
+
+    <!-- PRICE -->
+
+    <div class="big-price">
+
+        KSh {{ product.price|floatformat:0 }}
+
+        {% if product.old_price %}
+
+            <del>
+                KSh {{ product.old_price|floatformat:0 }}
+            </del>
+
+        {% endif %}
+
     </div>
+
+
+    <!-- DISCOUNT -->
+
+    {% if product.discount_percent %}
+
+        <span class="discount inline-discount">
+            Save {{ product.discount_percent }}%
+        </span>
+
+    {% endif %}
+
+
+    <!-- DESCRIPTION -->
+
+    {% if product.description %}
+
+        <p>
+            {{ product.description }}
+        </p>
+
+    {% endif %}
+
+
+    <!-- STOCK -->
+
+    {% if product.stock > 0 %}
+
+        <p class="stock">
+            ✓ In stock · {{ product.stock }} available
+        </p>
+
+    {% else %}
+
+        <p class="stock">
+            Currently out of stock
+        </p>
+
+    {% endif %}
+
+
+    <!-- ADD TO CART -->
+
+    {% if product.stock > 0 %}
+
+        <form
+            method="post"
+            action="{% url 'add_to_cart' product.id %}"
+        >
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="next"
+                value="{% url 'cart' %}"
+            >
+
+            <button
+                class="btn btn-red large"
+                type="submit"
+            >
+                Add to cart
+            </button>
+
+        </form>
+
+    {% endif %}
+
+</div>
+```
+
 </section>
+
 {% endblock %}

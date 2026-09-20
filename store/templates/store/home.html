@@ -1,161 +1,82 @@
-{% extends "store/base.html" %}
-{% load static %}
-{% block title %}StanMatt — Groceries delivered fast{% endblock %}
-{% block content %}
 
-<section class="hero">
-    <div class="container hero-grid">
+{% extends "store/base.html" %} 
+{% load static %} {% block title %}StanMatt — Groceries delivered fast{% endblock %} {% block content %} 
+<section class="hero"> 
+  <!-- ===== HERO CAROUSEL ===== -->
+<section class="hero hero-carousel" id="heroCarousel" aria-roledescription="carousel" aria-label="StanMatt promotions">
+
+  <div class="hero-panes">
+
+    <!-- Pane 1 : Groceries -->
+    <div class="hero-pane is-active" data-pane="0" role="group" aria-label="Slide 1 of 2">
+      <div class="container hero-grid">
         <div class="hero-copy">
-            <span class="eyebrow">YOUR EVERYDAY SUPERMARKET</span>
-            <h1>Groceries you love,<br><strong>delivered fast.</strong></h1>
-            <p>Fresh essentials, unbeatable prices and thousands of products delivered straight to your door.</p>
-
-            <div class="hero-buttons">
-                <a class="btn btn-red" href="{% url 'products' %}">Start shopping →</a>
-                <a class="btn btn-outline" href="{% url 'products' %}">View deals</a>
-            </div>
+          <span class="eyebrow">YOUR EVERYDAY SUPERMARKET</span>
+          <h1>Groceries you love,<br><strong>delivered fast.</strong></h1>
+          <p>Fresh essentials, unbeatable prices and thousands of products delivered straight to your door.</p>
+          <div class="hero-buttons">
+            <a class="btn btn-red" href="{% url 'products' %}">Start shopping →</a>
+            <a class="btn btn-outline" href="{% url 'products' %}">View deals</a>
+          </div>
         </div>
 
-        <div class="hero-deal">
-            <div class="deal-label">WEEKEND MEGA DEALS</div>
-            <div class="deal-number">UP TO <b>30%</b> OFF</div>
-            <p>On selected supermarket essentials</p>
+        <div class="hero-deal"> <!--hero-deal-->
+          <div class="deal-label">WEEKEND MEGA DEALS</div>
+          <div class="deal-number">UP TO <b>30%</b> OFF</div>
+          <p>On selected supermarket essentials</p>
+          <a class="btn btn-red" href="{% url 'products' %}">Shop deals</a>
 
-            <a class="btn btn-red" href="{% url 'products' %}">Shop deals</a>
-
-            <div class="hero-slider" id="heroSlider" aria-label="StanMatt promotions">
-                <img src="{% static 'store/images/hero-1.jpg' %}" class="hero-slide" alt="StanMatt grocery promotion">
-                <img src="{% static 'store/images/hero-2.jpg' %}" class="hero-slide" alt="StanMatt grocery promotion">
-                <img src="{% static 'store/images/hero-3.jpg' %}" class="hero-slide" alt="StanMatt grocery promotion">
-                <img src="{% static 'store/images/hero-4.jpg' %}" class="hero-slide" alt="StanMatt grocery promotion">
-                <img src="{% static 'store/images/hero-5.jpg' %}" class="hero-slide" alt="StanMatt grocery promotion">
-            </div>
+          <div class="">
+            <img src="{% static 'store/images/stany.1.jpg' %}" class="hero-slide" alt="StanMatt grocery promotion">
+            <img src="{% static 'store/images/stany2.jpg' %}" class="hero-slide" alt="StanMatt grocery promotion">
+            <img src="{% static 'store/images/stany3.jpg' %}" class="hero-slide" alt="StanMatt grocery promotion">
+            <img src="{% static 'store/images/stanny4.jpg' %}" class="hero-slide" alt="StanMatt grocery promotion">
+            <img src="{% static 'store/images/stanny5.jpg' %}" class="hero-slide" alt="StanMatt grocery promotion">
+          </div>
         </div>
-    </div>
-</section>
-
-<section class="trust-strip container">
-    <div>🚚 <b>Fast Delivery</b><small>In 60 mins</small></div>
-    <div>🏷️ <b>Best Prices</b><small>Everyday</small></div>
-    <div>📦 <b>Wide Assortment</b><small>10,000+ products</small></div>
-    <div>🔒 <b>Secure Payments</b><small>Card & M-Pesa</small></div>
-</section>
-
-<section class="section container">
-    <div class="section-heading">
-        <div>
-            <h2>Shop by category</h2>
-            <p>Everything you need, sorted your way.</p>
-        </div>
+      </div>
     </div>
 
-    <div class="category-grid">
-        {% for category in categories %}
-        <a href="{% url 'category_products' category.slug %}" class="category-card">
-            <span>{{ category.icon }}</span>
-            <b>{{ category.name }}</b>
-        </a>
-        {% endfor %}
-    </div>
-</section>
+    <!-- Pane 2 : Lipa Mdogo Mdogo -->
+    <div class="hero-pane hp-lipa" data-pane="1" role="group" aria-label="Slide 2 of 2" aria-hidden="true">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow eyebrow-gold">HOME OF HOUSEHOLDS</span>
+          <h1>Lipa Mdogo Mdogo,<br><strong>on almost everything.</strong></h1>
+          <p>Hire purchase on a wide range of products — electronics, kitchenware, hardware, furniture and selected assorted goods. Small deposit, easy weekly or monthly payments.</p>
 
-<section class="dark-section">
-    <div class="container">
-        <div class="section-heading light">
-            <div>
-                <h2>Today's deals</h2>
-                <p>Prices drop daily — grab them before they're gone.</p>
-            </div>
-            <a href="{% url 'products' %}">See all deals →</a>
+          <ul class="lipa-points">
+            <li>✔ Flexible weekly &amp; monthly instalments</li>
+            <li>✔ No hidden charges — pay at your pace</li>
+          </ul>
+
+          <div class="hero-buttons">
+            <a class="btn btn-gold" href="{% url 'products' %}">Shop hire purchase →</a>
+            <a class="btn btn-ghost" href="tel:+254798577425">Call 0798 577 425</a>
+          </div>
         </div>
 
-        <div class="product-grid">
-            {% for product in deals %}
-            <article class="product-card dark-card">
-
-                {% if product.discount_percent %}
-                <span class="discount">-{{ product.discount_percent }}%</span>
-                {% endif %}
-
-                <a href="{% url 'product_detail' product.slug %}" class="product-image">
-                    {% if product.display_image %}
-                        <img src="{{ product.display_image }}" alt="{{ product.name }}">
-                    {% else %}
-                        {{ product.emoji }}
-                    {% endif %}
-                </a>
-
-                <div class="product-info">
-                    <small>{{ product.category.name }}</small>
-                    <h3>{{ product.name }}</h3>
-
-                    <div class="price-row">
-                        <strong>KSh {{ product.price|floatformat:0 }}</strong>
-                        {% if product.old_price %}
-                        <del>KSh {{ product.old_price|floatformat:0 }}</del>
-                        {% endif %}
-                    </div>
-
-                    <form method="post" action="{% url 'add_to_cart' product.id %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="next" value="{% url 'home' %}">
-                        <button class="btn btn-light full">Add to cart</button>
-                    </form>
-                </div>
-            </article>
-
-            {% empty %}
-            <p>No products yet. Run <code>python manage.py seed_products</code>.</p>
-            {% endfor %}
+        <div class="lipa-card">
+      
+          <img src="{% static 'store/images/stan2.jpg' %}"alt="StanMatt Supermarket — everything you need, all in one place">
+          <div class="lipa-strip">>
+          <div class="lipa-strip">
+           
+          </div>
         </div>
-    </div>
-</section>
-
-<section class="section container">
-    <div class="section-heading">
-        <div>
-            <h2>Featured products</h2>
-            <p>Customer favourites, hand-picked by our team.</p>
-        </div>
-        <a href="{% url 'products' %}">Browse shop →</a>
+      </div>
     </div>
 
-    <div class="product-grid">
-        {% for product in featured %}
-        <article class="product-card">
+  </div>
 
-            {% if product.discount_percent %}
-            <span class="discount">-{{ product.discount_percent }}%</span>
-            {% endif %}
+  <!--<button class="hero-arrow hero-prev" type="button" aria-label="Previous slide">‹</button>
+  <button class="hero-arrow hero-next" type="button" aria-label="Next slide">›</button>
 
-            <a href="{% url 'product_detail' product.slug %}" class="product-image">
-                {% if product.display_image %}
-                    <img src="{{ product.display_image }}" alt="{{ product.name }}">
-                {% else %}
-                    {{ product.emoji }}
-                {% endif %}
-            </a>
+  <div class="hero-dots" role="tablist">
+    <button class="hero-dot is-active" type="button" data-go="0" aria-label="Go to slide 1"></button>
+    <button class="hero-dot" type="button" data-go="1" aria-label="Go to slide 2"></button>
+  </div>
+</section>-->
+<section class="trust-strip container"> <div>🚚 <b>Fast Delivery</b><small>In 60 mins</small></div> <div>🏷️ <b>Best Prices</b><small>Everyday</small></div> <div>📦 <b>Wide Assortment</b><small>10,000+ products</small></div> <div>🔒 <b>Secure Payments</b><small>Card & M-Pesa</small></div> </section> <section class="section container"> <div class="section-heading"> <div> <h2>Shop by category</h2> <p>Everything you need, sorted your way.</p> </div> </div> <div class="category-grid"> {% for category in categories %} <a href="{% url 'category_products' category.slug %}" class="category-card"> <span>{{ category.icon }}</span> <b>{{ category.name }}</b> </a> {% endfor %} </div> </section> <section class="dark-section"> <div class="container"> <div class="section-heading light"> <div> <h2>Today's deals</h2> <p>Prices drop daily — grab them before they're gone.</p> </div> <a href="{% url 'products' %}">See all deals →</a> </div> <div class="product-grid"> {% for product in deals %} <article class="product-card dark-card"> {% if product.discount_percent %} <span class="discount">-{{ product.discount_percent }}%</span> {% endif %} <a href="{% url 'product_detail' product.slug %}" class="product-image"> {% if product.display_image %} <img src="{{ product.display_image }}" alt="{{ product.name }}"> {% else %} {{ product.emoji }} {% endif %} </a> <div class="product-info"> <small>{{ product.category.name }}</small> <h3>{{ product.name }}</h3> <div class="price-row"> <strong>KSh {{ product.price|floatformat:0 }}</strong> {% if product.old_price %} <del>KSh {{ product.old_price|floatformat:0 }}</del> {% endif %} </div> <form method="post" action="{% url 'add_to_cart' product.id %}"> {% csrf_token %} <input type="hidden" name="next" value="{% url 'home' %}"> <button class="btn btn-light full">Add to cart</button> </form> </div> </article> {% empty %} <p>No products yet. Run <code>python manage.py seed_products</code>.</p> {% endfor %} </div> </div> </section> <section class="section container"> <div class="section-heading"> <div> <h2>Featured products</h2> <p>Customer favourites, hand-picked by our team.</p> </div> <a href="{% url 'products' %}">Browse shop →</a> </div> <div class="product-grid"> {% for product in featured %} <article class="product-card"> {% if product.discount_percent %} <span class="discount">-{{ product.discount_percent }}%</span> {% endif %} <a href="{% url 'product_detail' product.slug %}" class="product-image"> {% if product.display_image %} <img src="{{ product.display_image }}" alt="{{ product.name }}"> {% else %} {{ product.emoji }} {% endif %} </a> <div class="product-info"> <small>{{ product.category.name }}</small> <h3>{{ product.name }}</h3> <div class="price-row"> <strong>KSh {{ product.price|floatformat:0 }}</strong> {% if product.old_price %} <del>KSh {{ product.old_price|floatformat:0 }}</del> {% endif %} </div> <form method="post" action="{% url 'add_to_cart' product.id %}"> {% csrf_token %} <input type="hidden" name="next" value="{% url 'home' %}"> <button class="btn btn-outline full">Add to cart</button> </form> </div> </article> {% endfor %} </div> </section> 
 
-            <div class="product-info">
-                <small>{{ product.category.name }}</small>
-                <h3>{{ product.name }}</h3>
-
-                <div class="price-row">
-                    <strong>KSh {{ product.price|floatformat:0 }}</strong>
-                    {% if product.old_price %}
-                    <del>KSh {{ product.old_price|floatformat:0 }}</del>
-                    {% endif %}
-                </div>
-
-                <form method="post" action="{% url 'add_to_cart' product.id %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="next" value="{% url 'home' %}">
-                    <button class="btn btn-outline full">Add to cart</button>
-                </form>
-            </div>
-        </article>
-        {% endfor %}
-    </div>
-</section>
-
-{% endblock %}
+{% endblock %}\

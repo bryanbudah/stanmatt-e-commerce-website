@@ -1,0 +1,45 @@
+{% extends "store/base.html" %}
+
+{% block title %}StanMatt App — Shop Smarter{% endblock %}
+
+{% block content %}
+
+<section class="policy-page container">
+
+    <div class="policy-header">
+        <span class="policy-icon">📱</span>
+        <h1>StanMatt Mobile App</h1>
+        <p>Shop your everyday essentials wherever you are.</p>
+    </div>
+
+    <div class="policy-card">
+
+        <h2>Coming Soon</h2>
+
+        <p>
+            The StanMatt mobile app is currently under development.
+            Soon you'll be able to browse products, manage your cart,
+            place orders and track deliveries directly from your phone.
+        </p>
+
+        <div class="app-options">
+            <div>
+                <h3>🍎 iOS</h3>
+                <p>Coming soon to the App Store.</p>
+            </div>
+
+            <div>
+                <h3>🤖 Android</h3>
+                <p>Coming soon to Google Play.</p>
+            </div>
+        </div>
+
+        <a href="{% url 'home' %}" class="btn">
+            Continue Shopping
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

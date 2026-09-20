@@ -1,0 +1,113 @@
+{% extends "store/base.html" %}
+
+{% block title %}Terms & Conditions — StanMatt{% endblock %}
+
+{% block content %}
+
+<section class="policy-page container">
+
+    <div class="policy-header">
+        <span class="policy-icon">📄</span>
+        <h1>Terms & Conditions</h1>
+        <p>Please read these terms before using StanMatt.</p>
+    </div>
+
+    <div class="policy-card">
+
+        <p>
+            <strong>Last updated: September 2026</strong>
+        </p>
+
+        <h2>1. About These Terms</h2>
+        <p>
+            These Terms & Conditions govern your use of the StanMatt
+            website and the purchase of products through our online
+            shopping platform.
+        </p>
+
+        <h2>2. Using Our Website</h2>
+        <p>
+            You agree to use the website lawfully and responsibly.
+            You must not attempt to interfere with the operation,
+            security or availability of the website.
+        </p>
+
+        <h2>3. Customer Accounts</h2>
+        <p>
+            If you create an account, you are responsible for keeping
+            your login information secure and for the activity carried
+            out through your account.
+        </p>
+
+        <h2>4. Products and Pricing</h2>
+        <p>
+            We aim to display accurate product descriptions, images,
+            availability and prices. However, product information may
+            occasionally contain errors or require updates.
+        </p>
+
+        <h2>5. Orders</h2>
+        <p>
+            Placing an order constitutes a request to purchase the
+            selected products. Orders may be subject to availability
+            and confirmation.
+        </p>
+
+        <h2>6. Payments</h2>
+        <p>
+            Customers must provide accurate payment information when
+            completing an order. Payment processing may be handled by
+            third-party payment providers.
+        </p>
+
+        <h2>7. Delivery</h2>
+        <p>
+            Delivery estimates are provided for convenience and may
+            vary depending on location, product availability, traffic,
+            weather and other circumstances.
+        </p>
+
+        <h2>8. Returns and Refunds</h2>
+        <p>
+            Returns and refunds are handled according to our
+            <a href="{% url 'returns_policy' %}">Returns Policy</a>.
+        </p>
+
+        <h2>9. Website Content</h2>
+        <p>
+            StanMatt retains rights to its original website design,
+            branding, content and other intellectual property unless
+            otherwise stated.
+        </p>
+
+        <h2>10. Privacy</h2>
+        <p>
+            Personal information should be handled in accordance with
+            the applicable privacy and data-protection requirements.
+        </p>
+
+        <h2>11. Changes to These Terms</h2>
+        <p>
+            These terms may be updated from time to time. Updated
+            terms will be published on this page.
+        </p>
+
+        <h2>12. Contact</h2>
+        <p>
+            If you have questions about these terms, please contact
+            StanMatt customer care.
+        </p>
+
+        <div class="policy-notice">
+            <strong>Portfolio demonstration:</strong>
+            These are mock e-commerce terms created for the StanMatt
+            demonstration website. They should be reviewed and adapted
+            by a qualified legal professional before being used by a
+            real business.
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

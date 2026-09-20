@@ -257,4 +257,86 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     }
+
+ 
+    const heroCarousel = document.getElementById("heroCarousel");
+ 
+    if (heroCarousel) {
+        const heroPanes = heroCarousel.querySelectorAll(".hero-pane");
+        const heroDots = heroCarousel.querySelectorAll(".hero-dot");
+ 
+        let heroIndex = 0;
+        let heroTimer = null;
+        const HERO_DELAY = 7000;
+ 
+        function showHeroPane(next) {
+            if (next === heroIndex) return;
+ 
+            heroPanes[heroIndex].classList.remove("is-active");
+            heroPanes[heroIndex].classList.add("is-prev");
+            heroPanes[heroIndex].setAttribute("aria-hidden", "true");
+            heroDots[heroIndex].classList.remove("is-active");
+ 
+            const leavingPane = heroPanes[heroIndex];
+ 
+            setTimeout(function () {
+                leavingPane.classList.remove("is-prev");
+            }, 760);
+ 
+            heroIndex = (next + heroPanes.length) % heroPanes.length;
+ 
+            heroPanes[heroIndex].classList.add("is-active");
+            heroPanes[heroIndex].removeAttribute("aria-hidden");
+            heroDots[heroIndex].classList.add("is-active");
+        }
+ 
+        function nextHeroPane() {
+            showHeroPane((heroIndex + 1) % heroPanes.length);
+        }
+ 
+        function startHeroCarousel() {
+            stopHeroCarousel();
+            heroTimer = setInterval(nextHeroPane, HERO_DELAY);
+        }
+ 
+        function stopHeroCarousel() {
+            if (heroTimer !== null) {
+                clearInterval(heroTimer);
+                heroTimer = null;
+            }
+        }
+ 
+        const heroPrevButton = heroCarousel.querySelector(".hero-prev");
+        const heroNextButton = heroCarousel.querySelector(".hero-next");
+ 
+        heroNextButton.addEventListener("click", function () {
+            nextHeroPane();
+            startHeroCarousel();
+        });
+ 
+        heroPrevButton.addEventListener("click", function () {
+            showHeroPane(heroIndex - 1);
+            startHeroCarousel();
+        });
+ 
+        heroDots.forEach(function (dot) {
+            dot.addEventListener("click", function () {
+                showHeroPane(Number(dot.dataset.go));
+                startHeroCarousel();
+            });
+        });
+ 
+        heroCarousel.addEventListener("mouseenter", stopHeroCarousel);
+        heroCarousel.addEventListener("mouseleave", startHeroCarousel);
+ 
+        document.addEventListener("visibilitychange", function () {
+            if (document.hidden) {
+                stopHeroCarousel();
+            } else {
+                startHeroCarousel();
+            }
+        });
+ 
+        startHeroCarousel();
+    }
 });

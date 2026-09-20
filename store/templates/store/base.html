@@ -1,89 +1,578 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
+    <!-- =====================================================
+         BASIC SEO
+         ===================================================== -->
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}StanMatt — Shop Smarter{% endblock %}</title>
-    <link rel="icon" type="image/png" href="{% static 'store/images/stanmatt-logo.png' %}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="{% block meta_description %}StanMatt is your everyday online supermarket. Shop quality groceries and everyday essentials at competitive prices.{% endblock %}"
+    >
+
+    <meta
+        name="robots"
+        content="{% block robots %}index, follow{% endblock %}"
+    >
+
+
+    <!-- =====================================================
+         PAGE TITLE
+         ===================================================== -->
+
+    <title>
+        {% block title %}
+            StanMatt — Shop Smarter
+        {% endblock %}
+    </title>
+
+
+    <!-- =====================================================
+         CANONICAL URL
+         ===================================================== -->
+
+    <link
+        rel="canonical"
+        href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}"
+    >
+
+
+    <!-- =====================================================
+         FAVICON
+         ===================================================== -->
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="{% static 'store/images/stanmatt-logo.png' %}"
+    >
+
+
+    <!-- =====================================================
+         OPEN GRAPH
+         Facebook / WhatsApp / LinkedIn sharing
+         ===================================================== -->
+
+    <meta
+        property="og:type"
+        content="{% block og_type %}website{% endblock %}"
+    >
+
+    <meta
+        property="og:title"
+        content="{% block og_title %}StanMatt — Shop Smarter{% endblock %}"
+    >
+
+    <meta
+        property="og:description"
+        content="{% block og_description %}Shop quality groceries and everyday essentials at StanMatt.{% endblock %}"
+    >
+
+    <meta
+        property="og:url"
+        content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}"
+    >
+
+    <meta
+        property="og:site_name"
+        content="StanMatt"
+    >
+
+    <!-- Page-specific image can override this -->
+    <meta
+        property="og:image"
+        content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt-logo.png' %}{% endblock %}"
+    >
+
+
+    <!-- =====================================================
+         TWITTER / X
+         ===================================================== -->
+
+    <meta
+        name="twitter:card"
+        content="summary_large_image"
+    >
+
+    <meta
+        name="twitter:title"
+        content="{% block twitter_title %}StanMatt — Shop Smarter{% endblock %}"
+    >
+
+    <meta
+        name="twitter:description"
+        content="{% block twitter_description %}Shop quality groceries and everyday essentials at StanMatt.{% endblock %}"
+    >
+
+    <meta
+        name="twitter:image"
+        content="{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt-logo.png' %}"
+    >
+
+
+    <!-- =====================================================
+         GOOGLE FONTS
+         ===================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         MAIN CSS
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'store/css/style.css' %}"
+    >
+
+
+    <!-- =====================================================
+         GLOBAL STRUCTURED DATA
+         ===================================================== -->
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "StanMatt",
+        "url": "{{ request.scheme }}://{{ request.get_host }}/",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "{{ request.scheme }}://{{ request.get_host }}{% url 'products' %}?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
+
+    <!-- =====================================================
+         PAGE-SPECIFIC SEO / STRUCTURED DATA
+         ===================================================== -->
+
+    {% block extra_head %}
+    {% endblock %}
+
 </head>
+
+
 <body>
-<header class="site-header">
-    <div class="top-nav container">
-        <a href="{% url 'home' %}" class="brand">
-    <img src="{% static 'store/images/stt.jpg' %}" alt="StanMatt">
-</a>
 
-        <form class="search" action="{% url 'products' %}" method="get">
-            <input type="search" name="q" placeholder="Search products, brands & more..." value="{{ request.GET.q }}">
-            <button type="submit">Search</button>
-        </form>
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
 
-        <div class="nav-actions">
-            {% if user.is_authenticated %}
-                <a href="{% url 'home' %}" class="nav-link">Hi, {{ user.username }}</a>
-                <form method="post" action="{% url 'logout' %}" class="inline-form">{% csrf_token %}<button class="nav-link logout-btn">Logout</button></form>
-            {% else %}
-                <a href="{% url 'login' %}" class="nav-link">Log in</a>
-                <a href="{% url 'signup' %}" class="nav-link">Create account</a>
-            {% endif %}
-            <a href="{% url 'cart' %}" class="cart-link">🛒 Cart <b id="cart-count">{{ cart_count }}</b></a>
+    <header class="site-header">
+
+        <!-- =================================================
+             TOP NAVIGATION
+             ================================================= -->
+
+        <div class="top-nav container">
+
+            <!-- BRAND -->
+
+            <a
+                href="{% url 'home' %}"
+                class="brand"
+                aria-label="StanMatt home"
+            >
+
+                <img
+                    src="{% static 'store/images/stt.jpg' %}"
+                    alt="StanMatt"
+                >
+
+            </a>
+
+
+            <!-- SEARCH -->
+
+            <form
+                class="search"
+                action="{% url 'products' %}"
+                method="get"
+                role="search"
+            >
+
+                <input
+                    type="search"
+                    name="q"
+                    placeholder="Search products, brands & more..."
+                    value="{{ request.GET.q }}"
+                    aria-label="Search products"
+                >
+
+                <button type="submit">
+                    Search
+                </button>
+
+            </form>
+
+
+            <!-- ACCOUNT / CART -->
+
+            <div class="nav-actions">
+
+                {% if user.is_authenticated %}
+
+                    <a
+                        href="{% url 'home' %}"
+                        class="nav-link"
+                    >
+                        Hi, {{ user.username }}
+                    </a>
+
+                    <form
+                        method="post"
+                        action="{% url 'logout' %}"
+                        class="inline-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="nav-link logout-btn"
+                        >
+                            Logout
+                        </button>
+
+                    </form>
+
+                {% else %}
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="nav-link"
+                    >
+                        Log in
+                    </a>
+
+                    <a
+                        href="{% url 'signup' %}"
+                        class="nav-link"
+                    >
+                        Create account
+                    </a>
+
+                {% endif %}
+
+
+                <!-- CART -->
+
+                <a
+                    href="{% url 'cart' %}"
+                    class="cart-link"
+                    aria-label="Shopping cart"
+                >
+                    🛒 Cart
+                    <b id="cart-count">
+                        {{ cart_count }}
+                    </b>
+                </a>
+
+            </div>
+
         </div>
-    </div>
 
-    <nav class="main-nav">
-        <div class="container nav-inner">
-            <a href="{% url 'products' %}" class="nav-category">☰ Categories</a>
-            <a href="{% url 'products' %}">Deals</a>
-            <a href="{% url 'products' %}">New Arrivals</a>
-            <a href="{% url 'products' %}">Best Sellers</a>
-            <a href="{% url 'products' %}">Flash Sales</a>
-            <a href="{% url 'products' %}">Store Locator</a>
-            <a href="{% url 'products' %}">Help</a>
+
+        <!-- =================================================
+             MAIN NAVIGATION
+             ================================================= -->
+
+        <nav
+            class="main-nav"
+            aria-label="Main navigation"
+        >
+
+            <div class="container nav-inner">
+
+                <a
+                    href="{% url 'products' %}"
+                    class="nav-category"
+                >
+                    ☰ Categories
+                </a>
+
+
+                <a href="{% url 'deals' %}">
+                    Deals
+                </a>
+
+
+                <a href="{% url 'new_arrivals' %}">
+                    New Arrivals
+                </a>
+
+
+                <a href="{% url 'best_sellers' %}">
+                    Best Sellers
+                </a>
+
+
+                <a href="{% url 'flash_sales' %}">
+                    Flash Sales
+                </a>
+
+
+                <a href="{% url 'store_locator' %}">
+                    Store Locator
+                </a>
+
+
+                <a href="{% url 'help_center' %}">
+                    Help
+                </a>
+
+            </div>
+
+        </nav>
+
+
+        <!-- =================================================
+             OFFER BAR
+             ================================================= -->
+
+        <div class="offer-bar">
+
+            <div
+                class="container offer-track"
+                id="offerTrack"
+            >
+
+                <span>
+                    🔥 FLASH SALE: Up to 30% off selected products
+                </span>
+
+                <span>
+                    🚚 Free delivery on orders above KSh 2,000
+                </span>
+
+                <span>
+                    📱 Pay securely with M-Pesa or Card
+                </span>
+
+                <span>
+                    🎁 Save 10% on your first order
+                </span>
+
+                <span>
+                    ⚡ Fresh groceries delivered fast
+                </span>
+
+            </div>
+
         </div>
-    </nav>
 
-    <div class="offer-bar">
-        <div class="container offer-track" id="offerTrack">
-            <span>🔥 FLASH SALE: Up to 30% off selected products</span>
-            <span>🚚 Free delivery on orders above KSh 2,000</span>
-            <span>📱 Pay securely with M-Pesa or Card</span>
-            <span>🎁 Save 10% on your first order</span>
-            <span>⚡ Fresh groceries delivered fast</span>
+    </header>
+
+
+    <!-- =====================================================
+         DJANGO MESSAGES
+         ===================================================== -->
+
+    {% if messages %}
+
+        <div class="messages container">
+
+            {% for message in messages %}
+
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
         </div>
-    </div>
-</header>
 
-{% if messages %}
-<div class="messages container">
-    {% for message in messages %}
-        <div class="message {{ message.tags }}">{{ message }}</div>
-    {% endfor %}
-</div>
-{% endif %}
+    {% endif %}
 
-<main>{% block content %}{% endblock %}</main>
 
-<footer class="footer">
-    <div class="container footer-grid">
-        <div>
-            <div class="brand footer-brand">Stan<span>Matt</span></div>
-            <p>Your everyday supermarket, reimagined.</p>
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main>
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="footer">
+
+        <div class="container footer-grid">
+
+
+            <!-- BRAND -->
+
+            <div>
+
+                <div class="brand footer-brand">
+                    Stan<span>Matt</span>
+                </div>
+
+                <p>
+                    Your everyday supermarket, reimagined.
+                </p>
+
+            </div>
+
+
+            <!-- CUSTOMER CARE -->
+
+            <div>
+
+                <h4>
+                    Customer care
+                </h4>
+
+
+                <a href="{% url 'help_center' %}">
+                    Help centre
+                </a>
+
+
+                <a href="{% url 'track_order' %}">
+                    Track order
+                </a>
+
+
+                <a href="{% url 'returns_policy' %}">
+                    Returns policy
+                </a>
+
+
+                <a href="{% url 'terms_conditions' %}">
+                    Terms & Conditions
+                </a>
+
+            </div>
+
+
+            <!-- SHOP -->
+
+            <div>
+
+                <h4>
+                    Shop
+                </h4>
+
+
+                <a
+                    href="{% url 'category_products' 'fruits-vegetables' %}"
+                >
+                    Fruits & Vegetables
+                </a>
+
+
+                <a
+                    href="{% url 'category_products' 'bakery' %}"
+                >
+                    Bakery
+                </a>
+
+
+                <a
+                    href="{% url 'category_products' 'dairy-eggs' %}"
+                >
+                    Dairy & Eggs
+                </a>
+
+
+                <a href="{% url 'deals' %}">
+                    Deals
+                </a>
+
+
+                <a href="{% url 'new_arrivals' %}">
+                    New Arrivals
+                </a>
+
+            </div>
+
+
+            <!-- APP -->
+
+            <div>
+
+                <h4>
+                    Get the app
+                </h4>
+
+
+                <a
+                    href="{% url 'app_page' %}?platform=ios"
+                >
+                    iOS app
+                </a>
+
+
+                <a
+                    href="{% url 'app_page' %}?platform=android"
+                >
+                    Android app
+                </a>
+
+            </div>
+
         </div>
-        <div><h4>Customer care</h4><a href="#">Help centre</a><a href="#">Track order</a><a href="#">Returns policy</a></div>
-        <div><h4>Shop</h4><a href="{% url 'products' %}">Fruits & Vegetables</a><a href="{% url 'products' %}">Bakery</a><a href="{% url 'products' %}">Dairy & Eggs</a></div>
-        <div><h4>Get the app</h4><a href="#">iOS app</a><a href="#">Android app</a></div>
-    </div>
-    <div class="container footer-bottom">
-        <span>© 2026 StanMatt. All rights reserved.</span>
-        <span>Nairobi · Mombasa · Kisumu</span>
-    </div>
-</footer>
 
-<script src="{% static 'store/js/app.js' %}"></script>
+
+        <!-- FOOTER BOTTOM -->
+
+        <div class="container footer-bottom">
+
+            <span>
+                © 2026 StanMatt. All rights reserved.
+            </span>
+
+            <span>
+                Nairobi · Mombasa · Kisumu
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="{% static 'store/js/app.js' %}"></script>
+
 </body>
+
 </html>
