@@ -55,7 +55,10 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+
+    "cloudinary_storage",
     "django.contrib.staticfiles",
+    "cloudinary",
 
     "store",
 ]
@@ -182,9 +185,23 @@ STATIC_URL = "/static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+
+# =========================================================
+# CLOUDINARY (MEDIA STORAGE)
+# =========================================================
+# Product images are uploaded through Django admin and need
+# to survive redeploys. Render's local disk is ephemeral, so
+# media files are routed to Cloudinary instead of local disk.
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
+}
+
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
@@ -195,18 +212,10 @@ STORAGES = {
 # =========================================================
 # MEDIA FILES
 # =========================================================
-# Development only for now.
-#
-# IMPORTANT:
-# Render's local filesystem should NOT be used as permanent
-# product-image storage.
-#
-# We will move product images to Cloudinary/S3-compatible
-# storage before production launch.
+# MEDIA_URL is still required by Django even though actual
+# storage/serving is handled by Cloudinary via STORAGES above.
 
 MEDIA_URL = "/media/"
-
-MEDIA_ROOT = BASE_DIR / "media"
 
 
 # =========================================================
