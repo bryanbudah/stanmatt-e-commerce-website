@@ -207,7 +207,9 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
-
+# Legacy alias required for django-cloudinary-storage's collectstatic
+# override, which checks the old-style setting name.
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # =========================================================
 # MEDIA FILES
