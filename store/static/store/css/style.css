@@ -449,7 +449,6 @@ textarea{min-height:100px;resize:vertical}
 @media(max-width:450px){
     .product-grid,.listing-grid{grid-template-columns:1fr}
     .category-grid{grid-template-columns:repeat(2,1fr)}
-    .nav-actions .nav-link{display:none}
     .hero h1{font-size:37px}
     .hero-deal{padding:20px;min-height:365px}
     .hero-slider{height:175px}
@@ -465,6 +464,20 @@ textarea{min-height:100px;resize:vertical}
     .trust-strip div{border-right:0}
     .page-head h1{font-size:28px}
     .page-head p{font-size:13px}
+}
+
+/* Login/Create account/Cart: wrap instead of hiding on very narrow phones */
+@media(max-width:450px){
+    .nav-actions{
+        flex-wrap:wrap;
+        justify-content:flex-end;
+        gap:6px 10px;
+        row-gap:4px;
+    }
+    .nav-actions .nav-link{
+        font-size:10px;
+        white-space:nowrap;
+    }
 }
 
 /* =========================================
