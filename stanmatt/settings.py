@@ -17,7 +17,7 @@ SECRET_KEY = os.environ.get(
 )
 
 DEBUG = os.environ.get("DEBUG", "True" \
-"").lower() == "true"
+"").lower() == "false"
 
 
 # Render provides RENDER_EXTERNAL_HOSTNAME automatically.
