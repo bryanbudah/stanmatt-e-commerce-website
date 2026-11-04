@@ -25,7 +25,7 @@ product
 {% if product.display_image %}
 {{ product.display_image }}
 {% else %}
-{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt-logo.png' %}
+{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt-logo.jpg %}
 {% endif %}
 {% endblock %}
 
@@ -92,7 +92,7 @@ product
     ],
     {% else %}
     "image": [
-        "{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt-logo.png' %}"
+        "{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt-logo.jpg' %}"
     ],
     {% endif %}
 
