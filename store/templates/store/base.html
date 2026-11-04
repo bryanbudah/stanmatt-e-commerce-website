@@ -54,8 +54,8 @@
 
     <link
         rel="icon"
-        type="image/png"
-        href="{% static 'store/images/stanmatt-logo.jpg' %}"    >
+        type="image/jpeg"
+        href="{% static 'store/images/stanmatt.jpg' %}"    >
 
 
     <!-- =====================================================
@@ -91,7 +91,7 @@
     <!-- Page-specific image can override this -->
     <meta
         property="og:image"
-        content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt-logo.png' %}{% endblock %}"
+        content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt.jpg' %}{% endblock %}"
     >
 
 
@@ -116,7 +116,7 @@
 
     <meta
         name="twitter:image"
-        content="{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt-logo.jpg' %}"
+        content="{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt.jpg' %}"
     >
 
 
