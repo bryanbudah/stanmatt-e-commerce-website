@@ -16,8 +16,7 @@ SECRET_KEY = os.environ.get(
     "django-insecure-change-this-for-local-development",
 )
 
-DEBUG = os.environ.get("DEBUG", "True" \
-"").lower() == "True"
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 
 # Render provides RENDER_EXTERNAL_HOSTNAME automatically.
