@@ -25,7 +25,7 @@ product
 {% if product.display_image %}
 {{ product.display_image }}
 {% else %}
-{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt.jpg %}
+{{ request.scheme }}://{{ request.get_host }}{% static 'store/images/stanmatt.jpg' %}
 {% endif %}
 {% endblock %}
 
